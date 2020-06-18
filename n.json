@@ -1,0 +1,90 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "reverse": {
+    "bridges": [
+      {
+        "tag": "bridge",
+        "domain": "nt.net"
+      }
+    ]
+  },
+  "outbounds": [
+    {
+      "tag": "hp",
+      "protocol": "http",
+      "settings": {
+        "servers": [
+          {
+            "address": "p.shlib.cf",
+            "port": 808
+          }
+        ]
+      }
+    },
+    {
+      "tag": "sp",
+      "protocol": "socks",
+      "settings": {
+        "servers": [
+          {
+            "address": "p.shlib.cf",
+            "port": 1080
+          }
+        ]
+      }
+    },
+    {
+      "tag": "d",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "tunnel",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "transit.shlib.cf",
+            "port": 8004,
+            "users": [
+              {
+                "id": "03042ad7-6316-46a0-8473-65768b0f1fb2",
+                "alterId": 64,
+                "security": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "proxySettings": {
+         "tag": "sp"
+      }
+    }
+  ],
+  "routing": {
+    "strategy": "rules",
+    "settings": {
+      "domainStrategy": "IPOnDemand",
+      "rules": [
+        {
+          "type": "field",
+          "inboundTag": [
+            "bridge"
+          ],
+          "domain": [
+            "full:nt.net"
+          ],
+          "outboundTag": "tunnel"
+        },
+        {
+          "type": "field",
+          "ip": [
+            "127.0.0.1"
+          ],
+          "outboundTag": "d"
+        }
+      ]
+    }
+  }
+}
